@@ -5,7 +5,7 @@ var express = require('express'),
     Employee = require('./api/models/employeeDataModel'),
     bodyParser = require('body-parser');
 
-
+var path = require('path');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://madmin:M0n60Madm1n@ds115573.mlab.com:15573/employees');
 
@@ -24,6 +24,10 @@ app.use(bodyParser.json());
 var routes = require('./api/routes/employeeRoutes');
 routes(app);
 
+app.use(express.static(path.join(__dirname, 'public')))
+app.get('/', function(req, res){
+    res.sendFile(path.join(__dirname, 'views/index.html'));
+});
 app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found'})
 });

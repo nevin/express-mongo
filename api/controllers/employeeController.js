@@ -7,10 +7,11 @@ var mongoose = require('mongoose'),
 var formidable = require('formidable');
 var path = require('path');
 var fs = require('fs');
+var xlsx = require('node-xlsx').default;
 
 exports.list_all_employees = function(req, res) {
     var get_params = url.parse(req.url, true).query;
-    console.log(get_params);
+
     res.setHeader('content-type', 'application/json');
     var parameter ="";
     if (Object.keys(get_params).length === 0)
@@ -71,14 +72,14 @@ exports.delete_employee = function(req, res) {
 };
 
 exports.file_uploads = function(req, res) {
-    console.log(req,res)
     var form = new formidable.IncomingForm();
     form.multiples = true;
-    form.uploadDir = path.join(__dirname, '/uploads');
+    form.uploadDir = path.join(__dirname, '../../uploads');
 
     // rename it to it's orignal name
     form.on('file', function(field, file) {
         fs.rename(file.path, path.join(form.uploadDir, file.name));
+
     });
 
 
@@ -87,10 +88,45 @@ exports.file_uploads = function(req, res) {
     });
 
 
-    form.on('end', function() {
+    form.on('end', function(field, file) {
+        var file_name = this.openedFiles[0].name;
+        processExcelfile(path.join(form.uploadDir, file_name));
         res.end('success');
     });
 
 
     form.parse(req);
 };
+
+var processExcelfile = function (file) {
+    const workSheetsFromFile = xlsx.parse(fs.readFileSync(file));
+    for(var i = 0; i < workSheetsFromFile.length; i++){
+        //console.log(workSheetsFromFile[i])
+       var sheetData = workSheetsFromFile[i].data;
+
+        var sheetIndex = sheetData[0];
+        for(var j = 1; j<sheetData.length;j++){
+            if(sheetData[j].length>0)
+            {
+                prepareData(sheetIndex,sheetData[j]);
+            }
+        }
+    }
+};
+
+var prepareData  = function (keyArray, dataArray) {
+   // console.log(keyArray,dataArray);
+    var dataToInsert = {};
+    for(var k = 0; k<keyArray.length;k++){
+       dataToInsert[keyArray[k]]  = dataArray[k]
+    }
+
+    var newEmploye = new Employee(dataToInsert);
+    newEmploye.save(function(err, employee) {
+        if (err)
+            return err;
+        return employee;
+    });
+
+
+}
