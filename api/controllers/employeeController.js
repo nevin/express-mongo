@@ -56,7 +56,7 @@ exports.delete_employee = function(req, res) {
 
 
     Employee.remove({
-        _id: req.params.employeeID
+        employeeID: parseInt(req.params.employeeID)
     }, function(err, employee) {
         if (err)
             res.send(err);

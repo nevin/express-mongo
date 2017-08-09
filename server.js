@@ -6,7 +6,7 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://<uname>:<password>@<url>');
+mongoose.connect('mongodb://madmin:M0n60Madm1n@ds115573.mlab.com:15573/employees');
 
 mongoose.connection.on('connected', function(){
     console.log("Connected");
