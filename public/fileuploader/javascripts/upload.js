@@ -29,6 +29,10 @@ $('#upload-input').on('change', function(){
       contentType: false,
       success: function(data){
           console.log('upload successful!\n' + data);
+          if(data == 'success'){
+              $('#status').html('Data inserted to the server.');
+          }
+
       },
       xhr: function() {
         // create an XMLHttpRequest
@@ -45,10 +49,12 @@ $('#upload-input').on('change', function(){
             // update the Bootstrap progress bar with the new percentage
             $('.progress-bar').text(percentComplete + '%');
             $('.progress-bar').width(percentComplete + '%');
+            $('#status').html('Inserting Data to mongodb');
 
             // once the upload reaches 100%, set the progress bar text to done
             if (percentComplete === 100) {
               $('.progress-bar').html('Done');
+
             }
 
           }
