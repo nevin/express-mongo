@@ -25,8 +25,8 @@ var routes = require('./api/routes/employeeRoutes');
 routes(app);
 
 app.use(express.static(path.join(__dirname, 'public')))
-app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname, 'views/index.html'));
+app.get('/uploader', function(req, res){
+    res.sendFile(path.join(__dirname, 'public/fileuploader/views/index.html'));
 });
 app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found'})
