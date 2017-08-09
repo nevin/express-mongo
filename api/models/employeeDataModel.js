@@ -46,7 +46,7 @@ EmployeeDataSchema = new Schema({
         default: 'MyCom'
     },
     dob: {
-        type: Date
+        type: String
     },
     isActive: {
         type: Boolean,
@@ -60,7 +60,8 @@ EmployeeDataSchema = new Schema({
     employeeID:{
         unique:true,
         type: Number,
-        min: 1
+        min: 1,
+        required:[true,'EmployeeID Required']
     },
     created_date: {
         type: Date,

@@ -13,4 +13,6 @@ module.exports = function(app) {
         .get(employeeData.get_employee_details)
         .put(employeeData.update_employee_details)
         .delete(employeeData.delete_employee);
+
+    app.route('/uploads').post(employeeData.file_uploads);
 };
