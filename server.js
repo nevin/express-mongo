@@ -7,7 +7,7 @@ var express = require('express'),
 
 var path = require('path');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://madmin:M0n60Madm1n@ds115573.mlab.com:15573/employees');
+mongoose.connect('mongodb://<username>:<password>@<server>:<port>/employees');
 
 mongoose.connection.on('connected', function(){
     console.log("Connected");
